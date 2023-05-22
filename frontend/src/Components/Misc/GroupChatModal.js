@@ -8,7 +8,6 @@ import axios from 'axios';
 import ChatContext from '../../Context/Chats/ChatContext';
 import UserBadge from './UserBadge';
 import UserCard from './UserCard';
-import { set } from 'mongoose';
 
 const style = {
   position: 'absolute',

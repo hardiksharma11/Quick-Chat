@@ -13,9 +13,9 @@ import typingGif from '../Animations/typingGif.gif'
 import "./Misc/scrollbar.css"
 
 import io from "socket.io-client";
-import { set } from 'mongoose';
 
-const HOST = "http://localhost:5000";
+
+const HOST = "https://quicktalk-gn75.onrender.com";
 var socket, selectedChatCompare;
 
 const Chat = () => {

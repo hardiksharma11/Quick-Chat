@@ -8,7 +8,6 @@ import AddIcon from '@mui/icons-material/Add';
 import GroupChatModal from './GroupChatModal';
 
 import "./scrollbar.css"
-import { set } from 'mongoose';
 
 const MyChats = () => {
   const context = useContext(ChatContext);

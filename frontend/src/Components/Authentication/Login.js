@@ -25,7 +25,7 @@ const Login = () => {
       return Notify("Please fill all the fields", "error");
     }
 
-    const url = "http://localhost:5000/api/user/login"
+    const url = "https://quicktalk-gn75.onrender.com/api/user/login"
     const response = await fetch(url, {
       method: 'POST',
       headers: {

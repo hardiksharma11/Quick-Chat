@@ -26,7 +26,7 @@ const SignUp = () => {
             pic: pic
 
         }
-        const url = "http://localhost:5000/api/user/"
+        const url = "https://quicktalk-gn75.onrender.com/api/user/"
         const response = await fetch(url, {
             method: 'POST',
             headers: {
