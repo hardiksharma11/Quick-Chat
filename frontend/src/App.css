@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", sans-serif;
+}
+
+.App {
+  background: url("https://res.cloudinary.com/dcmqewoxn/image/upload/v1684331276/IMG_20230517_191336_umxthu.jpg")
+      no-repeat center center/cover,
+    url("https://res.cloudinary.com/dcmqewoxn/image/upload/v1684331276/IMG_20230517_191336_umxthu.jpg")
+      no-repeat center center/contain;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  /* justify-content: center;  */
+}
+
+.myButton {
+  width: 100%;
+  background-position: 0;
+  background: linear-gradient(45deg, #3f51b5, #e91e63);
+  background-size: 200% 100%;
+  transition: background-position 0.5s ease;
+}
+
+.myButton:hover {
+  background-position: 100% 0;
+  transition: background-position 0.5s ease;
+}
+
+.searchUser::before {
+  content: "";
+  position: absolute;
+  background: url(https://res.cloudinary.com/dcmqewoxn/image/upload/v1684503829/pexels-photo-1194775_otgjnw.webp)
+    no-repeat center center/cover;
+  opacity: 0.5;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+}
+
+.chatWallpaper{
+  
+  background: url(https://res.cloudinary.com/dcmqewoxn/image/upload/v1684584575/IMG_20230520_173851_oqdepp.jpg)
+    no-repeat center center/cover;
+   
+}
