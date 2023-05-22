@@ -12,7 +12,9 @@ const app = express()
 dotenv.config();
 connectDb();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://quick-talk-4u.onrender.com'
+}));
 
 app.use(express.json());
 
