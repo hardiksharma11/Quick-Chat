@@ -14,7 +14,7 @@ const signUpUser = asyncHandler(async (req, res) => {
 
 
     if (userExists) {
-        res.status(400);
+        res.json({success: false,message:"User already exists"})
         throw new Error("User already exists");
     }
 
@@ -27,16 +27,16 @@ const signUpUser = asyncHandler(async (req, res) => {
 
     if (user) {
         res.status(201).json({
+            success:true,
             _id: user._id,
             name: user.name,
             email: user.email,
-            password: user.password,
             pic: user.pic,
             token: generateToken(user._id)
         })
     }
     else {
-        res.status(400);
+        res.json({success: false,message:"Enter valid credentials"})
         throw new Error("Failed to create user");
     }
 

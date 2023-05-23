@@ -6,45 +6,61 @@ import Tab from '@mui/joy/Tab';
 import TabPanel from '@mui/joy/TabPanel'
 import Login from '../Components/Authentication/Login';
 import SignUp from '../Components/Authentication/SignUp';
+import loadingGif from '../Animations/loadingGif.gif'
 
 
 const HomePage = () => {
 
-  const [colour,setColor]=useState(1)
+  const [colour, setColor] = useState(1)
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin=()=>{
+  const handleLogin = () => {
     setColor(1);
   }
-  const handleSignup=()=>{
+  const handleSignup = () => {
     setColor(2);
   }
 
   return (
-    <Box sx={{position:'absolute',left:0,margin:'5%'}} >
-      <Box m="auto"  sx={{ fontSize: '3vw', p: 2, borderRadius: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffffe0', height: '5%' }}>
-        <h3>
-        Quick Talk
-        </h3>
-      </Box>
+    <>
+      {loading ? <Box
+        width='100%'
+        height='100%'
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        bgcolor='#ffffff99'
+        >
+        <img src={loadingGif} height='50%' width='auto'/>
+      </Box> :
 
-      <Box m="auto" mt={2} sx={{ fontSize: '3vw', fontFamily: 'sans-serif', p: 2, borderRadius: 2, display: 'flex', justifyContent: 'center',  backgroundColor: '#ffffffe0'}}>
-        <Tabs aria-label="Basic tabs" defaultValue={0} sx={{ borderRadius: 'lg'}}>
-          <TabList>
-            <Tab onClick={handleLogin} style={(colour===1) ?{backgroundColor:'#7a7a7a9e'}:{backgroundColor:'#d1d1d18a'}} >Login</Tab>
-            <Tab onClick={handleSignup} style={(colour===2) ?{backgroundColor:'#7a7a7a9e'}:{backgroundColor:'#d1d1d18a'}} >Sign Up</Tab>
-          </TabList>
-          <Box >
-          <TabPanel value={0} sx={{ p: 2 }}>
-            <Login/>
-          </TabPanel>
-          <TabPanel value={1} mt={4} >
-            <SignUp/>
-          </TabPanel>
+        <Box sx={{ position: 'absolute', left: 0, margin: '5%' }} >
+          <Box m="auto" sx={{ fontSize: '3vw', p: 2, borderRadius: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffffe0', height: '5%' }}>
+            <h3>
+              Quick Talk
+            </h3>
           </Box>
-        </Tabs>
-      </Box>
-      
-    </Box>
+
+          <Box m="auto" mt={2} sx={{ fontSize: '3vw', fontFamily: 'sans-serif', p: 2, borderRadius: 2, display: 'flex', justifyContent: 'center', backgroundColor: '#ffffffe0' }}>
+            <Tabs aria-label="Basic tabs" defaultValue={0} sx={{ borderRadius: 'lg' }}>
+              <TabList>
+                <Tab onClick={handleLogin} style={(colour === 1) ? { backgroundColor: '#7a7a7a9e' } : { backgroundColor: '#d1d1d18a' }} >Login</Tab>
+                <Tab onClick={handleSignup} style={(colour === 2) ? { backgroundColor: '#7a7a7a9e' } : { backgroundColor: '#d1d1d18a' }} >Sign Up</Tab>
+              </TabList>
+              <Box >
+                <TabPanel value={0} sx={{ p: 2 }}>
+                  <Login setLoading={setLoading} />
+                </TabPanel>
+                <TabPanel value={1} mt={4} >
+                  <SignUp setLoading2={setLoading}/>
+                </TabPanel>
+              </Box>
+            </Tabs>
+          </Box>
+
+        </Box>
+      }
+    </>
   )
 }
 

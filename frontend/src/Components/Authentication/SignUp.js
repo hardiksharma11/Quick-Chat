@@ -1,8 +1,15 @@
-import React, { useState } from 'react'
-import { TextField, Button, Box } from '@mui/material';
+import React, { useState, useContext } from 'react'
+import { TextField, Box } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
+import Notify from '../Misc/Notify';
+import { useHistory } from "react-router-dom";
+import ChatContext from '../../Context/Chats/ChatContext';
 
-const SignUp = () => {
+const HOST = process.env.REACT_APP_HOST;
+const SignUp = ({ setLoading2 }) => {
+
+    const context = useContext(ChatContext);
+    const { setUser } = context;
 
     const [inputs, setInputs] = useState({
         name: "",
@@ -13,36 +20,64 @@ const SignUp = () => {
 
     const [pic, setPic] = useState("");
     const [loading, setLoading] = useState(false);
+    const history = useHistory();
 
     const handleChange = (e) => {
         setInputs({ ...inputs, [e.target.name]: e.target.value });
     }
 
     const handleSubmit = async () => {
-        const data = {
-            name: inputs.name,
-            email: inputs.email,
-            password: inputs.password,
-            pic: pic
 
+        if (!inputs.name || !inputs.email || !inputs.password || !inputs.confirmpassword) {
+            return Notify("Please fill all the fields", "error");
         }
-        const url = "https://quicktalk-gn75.onrender.com/api/user/"
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
 
-            body: JSON.stringify(data)
-        });
-        const json = await response.json();
-        console.log(json);
+        if (inputs.password !== inputs.confirmpassword) {
+            return Notify("Password and Confirm Password do not match", "error");
+        }
+        setLoading2(true);
+        try {
+
+            const data = {
+                name: inputs.name,
+                email: inputs.email,
+                password: inputs.password,
+                pic: pic
+
+            }
+            const url = `${HOST}/api/user/`
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify(data)
+            });
+            const json = await response.json();
+
+            if (!json.success) {
+                setLoading2(false);
+                return Notify(json.message, "error");
+            }
+
+            localStorage.setItem("userInfo", JSON.stringify(json));
+            setUser(json)
+            setLoading2(false);
+            Notify("Successfully Registered", "success");
+            history.push('/chats')
+
+        } catch (error) {
+            Notify(`${error.message}`, "error");
+        }
+
+        setLoading2(false);
     }
 
     const postDetails = (pic) => {
         setLoading(true);
         if (pic === undefined) {
-            alert('Not Found');
+            Notify("Not Found", "error");
             setLoading(false);
             return;
         }
@@ -59,7 +94,6 @@ const SignUp = () => {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log(data)
                     setPic(data.url.toString());
                     setLoading(false);
                 })
@@ -73,7 +107,7 @@ const SignUp = () => {
         }
 
         else {
-            alert("Please select an image");
+            Notify("Please select an image", "error");
             setLoading(false);
         }
     }
@@ -127,9 +161,9 @@ const SignUp = () => {
                     sx={{ margin: '6px 0px' }}
                     onChange={handleChange} />
 
-                
-                <input type="file" accept="image/*" style={{ margin: '6px 0px'}} name="pic" onChange={(e) => { postDetails(e.target.files[0]) }} />
-                
+
+                <input type="file" accept="image/*" style={{ margin: '6px 0px' }} name="pic" onChange={(e) => { postDetails(e.target.files[0]) }} />
+
                 <div style={{ margin: '8px 0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <LoadingButton variant="contained" loading={loading} onClick={handleSubmit} className='myButton'>Submit</LoadingButton>
                 </div>

@@ -5,8 +5,11 @@ import Notify from '../Misc/Notify';
 import ChatContext from '../../Context/Chats/ChatContext';
 import '../../App.css'
 
+console.log(process.env)
 
-const Login = () => {
+const HOST = process.env.REACT_APP_HOST;
+
+const Login = ({ setLoading }) => {
   const context = useContext(ChatContext);
   const { setUser } = context;
   const [email, setEmail] = useState('');
@@ -25,70 +28,77 @@ const Login = () => {
       return Notify("Please fill all the fields", "error");
     }
 
-    const url = "https://quicktalk-gn75.onrender.com/api/user/login"
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+    setLoading(true);
+    try {
+      const url = `${HOST}/api/user/login`
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
 
-      body: JSON.stringify(data)
-    });
+        body: JSON.stringify(data)
+      });
 
 
-    const json = await response.json();
-    if (!json.success) {
-      return Notify(json.message, "error");
+      const json = await response.json();
+      if (!json.success) {
+        return Notify(json.message, "error");
+      }
+
+
+      localStorage.setItem("userInfo", JSON.stringify(json));
+      setUser(json);
+      setLoading(false);
+      Notify("Login Successfull", "success");
+      history.push('/chats')
+    } 
+    catch (error) {
+      Notify("Something went wrong", "error");
     }
 
-
-    localStorage.setItem("userInfo", JSON.stringify(json));
-    setUser(json)
-    Notify("Login Successfull", "success");
-    history.push('/chats')
-
-
-
+    setLoading(false);
 
   }
 
   return (
     <div>
-      <form>
 
-        <TextField
-          name="email"
-          variant="outlined"
-          value={email}
-          required
-          fullWidth
-          id="email"
-          label="Email Address"
+        <form>
 
-          sx={{ margin: '6px 0px' }}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+          <TextField
+            name="email"
+            variant="outlined"
+            value={email}
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
 
-        <TextField
-          variant="outlined"
-          required
-          value={password}
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          sx={{ margin: '6px 0px' }}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+            sx={{ margin: '6px 0px' }}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <div style={{ margin: '8px 0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Button variant="contained" onClick={handleSubmit}
-            className='myButton'
-          >Login</Button>
-        </div>
-      </form>
+          <TextField
+            variant="outlined"
+            required
+            value={password}
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            sx={{ margin: '6px 0px' }}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
+          <div style={{ margin: '8px 0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Button variant="contained" onClick={handleSubmit}
+              className='myButton'
+            >Login</Button>
+          </div>
+        </form>
+      
 
     </div>
   )

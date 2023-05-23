@@ -15,7 +15,7 @@ import "./Misc/scrollbar.css"
 import io from "socket.io-client";
 
 
-const HOST = "https://quicktalk-gn75.onrender.com";
+const HOST = process.env.REACT_APP_HOST;
 var socket, selectedChatCompare;
 
 const Chat = () => {

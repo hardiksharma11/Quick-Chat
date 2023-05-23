@@ -14,7 +14,10 @@ connectDb();
 
 app.use(cors({
   origin: 'https://quick-talk-4u.onrender.com'
+  
 }));
+
+// app.use(cors())
 
 app.use(express.json());
 
@@ -38,6 +41,7 @@ const server = app.listen(PORT, () => {
 const io = require("socket.io")(server,{
   pingTimeout: 60000,
   cors:{
+    // origin:'http://localhost:3000'
     origin:'https://quick-talk-4u.onrender.com'
   }
 });
